@@ -7,3 +7,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: python test.py
+      # 2. 上传生成的文件
+      - name: 上传文件供下载
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-output-files  # 下载时显示的文件包名称（自定义）
+          path: |                  # 要上传的文件/目录（支持多文件）
+            output.txt             # 你的程序生成的文件
+            # 可添加更多：比如 log.txt、data/ 目录等
+          retention-days: 7        # 文件保存天数（免费版最多90天）
