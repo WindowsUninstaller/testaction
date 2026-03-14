@@ -1,0 +1,9 @@
+name: 运行 test.py
+on: workflow_dispatch  # 仅手动触发
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5  # 5分钟超时
+    steps:
+      - uses: actions/checkout@v4
+      - run: python test.py
