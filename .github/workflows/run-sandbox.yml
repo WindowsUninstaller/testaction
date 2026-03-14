@@ -5,14 +5,24 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5  # 5分钟超时
     steps:
-      - uses: actions/checkout@v4
-      - run: python test.py
-      # 2. 上传生成的文件
+      # 步骤1：拉取仓库代码（必加，否则找不到test.py）
+      - name: 拉取仓库代码
+        uses: actions/checkout@v4
+
+      # 步骤2：指定Python 3.12版本（可选，但确保版本一致）
+      - name: 设置Python 3.12环境
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # 步骤3：运行test.py，生成output.txt
+      - name: 执行test.py脚本
+        run: python test.py
+
+      # 步骤4：上传output.txt供下载（核心步骤）
       - name: 上传文件供下载
         uses: actions/upload-artifact@v4
         with:
-          name: test-output-files  # 下载时显示的文件包名称（自定义）
-          path: |                  # 要上传的文件/目录（支持多文件）
-            output.txt             # 你的程序生成的文件
-            # 可添加更多：比如 log.txt、data/ 目录等
-          retention-days: 7        # 文件保存天数（免费版最多90天）
+          name: test-output-files  # 下载时显示的文件包名称
+          path: output.txt         # 要上传的文件（test.py生成的）
+          retention-days: 7        # 文件保存7天
